@@ -25,11 +25,7 @@ class Rss extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $url = $input->getArgument('url');
-
-
         $reader = new ReadRssFeed($url);
-
-        print_r($reader->read());
-
+        $output->writeln($reader->read());
     }
 }
