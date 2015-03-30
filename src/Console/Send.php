@@ -67,9 +67,12 @@ class Send extends Command
                 if (!$outbox->isSent($guid)) {
                     foreach ($job->service as $service) {
                         $text = $formatter->format($service, $item);
+                        $output->writeln('Sending to ' . $service->profile);
                         $updater->send($access_token, $text, [$service->profile]);
                     }
+
                     $outbox->sent($guid, (string)$item->pubDate);
+                    $output->writeln('Sending completed: ' . $guid);
                 }
             }
 
