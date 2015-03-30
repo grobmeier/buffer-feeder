@@ -5,6 +5,11 @@
         "symfony/console": "~2.6",
         "guzzlehttp/guzzle": "~5.2"
     },
+    "autoload": {
+      "psr-4": {
+        "Grobmeier\\Buffer\\Feeder\\": "src/"
+      }
+    },
     "authors": [
         {
             "name": "Christian Grobmeier",
