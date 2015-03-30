@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+use Grobmeier\Buffer\Feeder\Console\Send;
 use Grobmeier\Buffer\Feeder\Console\Profiles;
 use Grobmeier\Buffer\Feeder\Console\Rss;
 use Symfony\Component\Console\Application;
@@ -9,4 +10,5 @@ require __DIR__ . "/../vendor/autoload.php";
 $application = new Application();
 $application->add(new Profiles());
 $application->add(new Rss());
+$application->add(new Send());
 $application->run();

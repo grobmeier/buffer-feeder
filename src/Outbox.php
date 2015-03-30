@@ -7,6 +7,13 @@ class Outbox
 
     private $archiveFile = 'archive.json';
 
+    function __construct($archiveFile = null)
+    {
+        if ($archiveFile != null) {
+            $this->archiveFile = $archiveFile;
+        }
+    }
+
     private function readArchive()
     {
         if ($this->cache != null) {
