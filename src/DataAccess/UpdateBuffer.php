@@ -18,10 +18,10 @@ namespace Grobmeier\Buffer\Feeder\DataAccess;
 
 class UpdateBuffer
 {
-    public function send($access_token, $text, $profileIds, $now = true, $shorten = true)
+    public function send($accessToken, $text, $profileIds, $now = true, $shorten = true)
     {
         $client = new \GuzzleHttp\Client();
-        $client->post("https://api.bufferapp.com/1/updates/create.json?access_token=" . $access_token, [
+        $client->post("https://api.bufferapp.com/1/updates/create.json?access_token=" . $accessToken, [
             'body' => [
                 'profile_ids' => $profileIds,
                 'text' => $text,

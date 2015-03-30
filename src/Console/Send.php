@@ -21,6 +21,7 @@ use Grobmeier\Buffer\Feeder\DataAccess\ReadRssFeed;
 use Grobmeier\Buffer\Feeder\DataAccess\UpdateBuffer;
 use Grobmeier\Buffer\Feeder\Outbox;
 use Grobmeier\Buffer\Feeder\TextFormatter;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,12 +49,12 @@ class Send extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config = $input->getArgument('config');
-        $access_token = $input->getArgument('access_token');
+        $accessToken = $input->getArgument('access_token');
 
         $configPath = realpath(__DIR__ . '/../../' . $config);
         $jobs = json_decode(file_get_contents($configPath));
 
-        array_map(function ($job) use ($output, $access_token) {
+        array_map(function ($job) use ($output, $accessToken) {
             $reader = new ReadRssFeed($job->url);
             $outbox = new Outbox($job->archive);
             $updater = new UpdateBuffer();
@@ -68,7 +69,12 @@ class Send extends Command
                     foreach ($job->service as $service) {
                         $text = $formatter->format($service, $item);
                         $output->writeln('Sending to ' . $service->profile);
-                        $updater->send($access_token, $text, [$service->profile]);
+                        try {
+                            $updater->send($accessToken, $text, [$service->profile]);
+                        } catch (RequestException $e) {
+                            $output->writeln($e->getResponse()->json());
+                            throw $e;
+                        }
                     }
 
                     $outbox->sent($guid, (string)$item->pubDate);
