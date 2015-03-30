@@ -64,12 +64,12 @@ class Send extends Command
 
             foreach ($items->item as $item) {
                 $guid = $item->guid;
-                foreach ($job->service as $service) {
-                    if (!$outbox->isSent($guid)) {
+                if (!$outbox->isSent($guid)) {
+                    foreach ($job->service as $service) {
                         $text = $formatter->format($service, $item);
                         $updater->send($access_token, $text, [$service->profile]);
-                        $outbox->sent($guid, (string)$item->pubDate);
                     }
+                    $outbox->sent($guid, (string)$item->pubDate);
                 }
             }
 
