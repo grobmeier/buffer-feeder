@@ -5,6 +5,7 @@ use Grobmeier\Buffer\Feeder\DataAccess\ReadProfiles;
 use Grobmeier\Buffer\Feeder\DataAccess\ReadRssFeed;
 use Grobmeier\Buffer\Feeder\DataAccess\UpdateBuffer;
 use Grobmeier\Buffer\Feeder\Outbox;
+use Grobmeier\Buffer\Feeder\TextFormatter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,17 +42,19 @@ class Send extends Command
             $reader = new ReadRssFeed($job->url);
             $outbox = new Outbox($job->archive);
             $updater = new UpdateBuffer();
+            $formatter = new TextFormatter();
 
-            $items = $reader->read();
+            // Convert from simplexml to stdclass quickly
+            $items = json_decode(json_encode($reader->read()));
 
             foreach ($items->item as $item) {
-                $title = (string)$item->title;
-                $link = (string)$item->link;
-                $guid = (string)$item->guid;
-
-                if (!$outbox->isSent($guid)) {
-                    $updater->send($access_token, $title . ' ' . $link, $job->service);
-                    $outbox->sent($guid, (string)$item->pubDate);
+                $guid = $item->guid;
+                foreach ($job->service as $service) {
+                    if (!$outbox->isSent($guid)) {
+                        $text = $formatter->format($service, $item);
+                        $updater->send($access_token, $text, [$service->profile]);
+                        $outbox->sent($guid, (string)$item->pubDate);
+                    }
                 }
             }
 

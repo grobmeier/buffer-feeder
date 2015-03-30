@@ -1,6 +1,14 @@
 [
   {
-    "url": "http://www.example.com/feed",
-    "service": [ "1234", "ABCD", "6789"]
+    "url": "http://example.com/feed",
+    "service": [
+      {
+        "profile": "1234",
+        "text": "%title% - %url% %hashtags%",
+        "limit": 100,
+        "hashtags": "#dartlang"
+      }
+    ],
+    "archive": "my-archive.json"
   }
 ]
