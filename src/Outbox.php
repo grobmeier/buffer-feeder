@@ -22,7 +22,7 @@ class Outbox
 
     private $archiveFile = 'archive.json';
 
-    function __construct($archiveFile = null)
+    public function __construct($archiveFile = null)
     {
         if ($archiveFile != null) {
             $this->archiveFile = $archiveFile;

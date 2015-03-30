@@ -20,7 +20,7 @@ class ReadRssFeed
 {
     private $url;
 
-    function __construct($url)
+    public function __construct($url)
     {
         $this->url = $url;
     }

@@ -22,7 +22,7 @@ class ReadProfiles
 {
     private $accessToken;
 
-    function __construct($accessToken)
+    public function __construct($accessToken)
     {
         $this->accessToken = $accessToken;
     }
@@ -30,10 +30,12 @@ class ReadProfiles
     public function read()
     {
         $client = new Client();
-        $response = $client->get(sprintf('https://api.bufferapp.com/1/profiles.json?access_token=%s', $this->accessToken));
+        $response = $client->get(
+            sprintf('https://api.bufferapp.com/1/profiles.json?access_token=%s', $this->accessToken)
+        );
 
         $result = [];
-        array_map(function($item) use (&$result) {
+        array_map(function ($item) use (&$result) {
             $r = new \stdClass();
             $r->id = $item['_id'];
             $r->service = $item['service'];

@@ -53,7 +53,7 @@ class Send extends Command
         $configPath = realpath(__DIR__ . '/../../' . $config);
         $jobs = json_decode(file_get_contents($configPath));
 
-        array_map(function($job) use ($output, $access_token) {
+        array_map(function ($job) use ($output, $access_token) {
             $reader = new ReadRssFeed($job->url);
             $outbox = new Outbox($job->archive);
             $updater = new UpdateBuffer();
