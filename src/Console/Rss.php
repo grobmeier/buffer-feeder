@@ -13,7 +13,7 @@ class Profiles extends Command
     {
         $this
             ->setName('profiles')
-            ->setDescription('Shows the currently connected profiles on Bufferapp')
+            ->setDescription('The access token to allow access to buffer')
             ->addArgument(
                 'access_token',
                 InputArgument::REQUIRED,
