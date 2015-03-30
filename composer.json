@@ -1,0 +1,14 @@
+{
+    "name": "grobmeier/buffer-feeder",
+    "description": "Simple app which reads from RSS and pushes things to Bufferapp",
+    "require": {
+        "symfony/console": "~2.6",
+        "guzzlehttp/guzzle": "~5.2"
+    },
+    "authors": [
+        {
+            "name": "Christian Grobmeier",
+            "email": "cg@grobmeier.de"
+        }
+    ]
+}
